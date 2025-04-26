@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: banco_postgres_despesas
+    restart: always
+    environment:
+      POSTGRES_USER: sistema
+      POSTGRES_PASSWORD: Perifa57813305#
+      POSTGRES_DB: despesas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: api_despesas
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    command: npm start
+
+volumes:
+  postgres_data:
